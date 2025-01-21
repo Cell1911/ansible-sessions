@@ -1,2 +1,0 @@
-[awshost]
-3.239.223.150 ansible_user=ubuntu ansible_ssh_private_key_file=/root/ansible-handler/key-scp.pem
