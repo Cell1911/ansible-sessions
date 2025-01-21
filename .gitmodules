@@ -1,0 +1,6 @@
+[submodule "anisble-basic/server"]
+	path = anisble-basic/server
+	url = https://github.com/Cell1911/ansible-sessions.git
+[submodule "anisble-basic/ansible-handler"]
+	path = anisble-basic/ansible-handler
+	url = https://github.com/Cell1911/ansible-sessions.git
