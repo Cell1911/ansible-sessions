@@ -1,0 +1,89 @@
+---
+- name: Example Ansible playbook for Handlers
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  roles:
+    - /root/ansible-variables/roles/custom-role
+
+  vars:
+    main_playbook_variable: "hello from main playbook!"  ##string type variable
+
+    is_enabled: true        ## boolean variable
+
+    fruits:                     ##list variable
+      - apple
+      - banana
+      - mango
+
+    fruits_label:        ## dictonary variable 
+      apple: 0.5
+      mango: 4.9
+      banana: 3.9
+
+    fruit_basket:         ## nested-variable
+      - name: john
+        fruits:
+          - apple
+          - orange
+      - name: jane
+        fruits:
+          - mango
+          - banana
+
+  vars_files:
+    - my-vars.yml
+            
+
+
+
+  tasks:
+    - name: String variable from - main_playbook_variable   ##to print string
+      debug:
+        var: main_playbook_variable
+
+    - name: Boolean ansible-variables      ## will be executed when bool=true; skipped if the bool=false
+      debug:
+        msg: "variable is true"
+      when: is_enabled
+
+    - name: List variable - Print list of fruits   ##printing the list of list items
+      debug:
+        var: fruits[2]
+
+    - name: List of dictonary items    ## will show whole dictonary list
+      debug:
+        var: fruits_label
+
+    - name: List of dictonary items - on location   ## will show the item on dictonary index postion
+      debug:
+        var: fruits_label.banana
+
+    - name: Assige the value of variable to another
+      command: echo "{{ fruits_label['banana']}}"  ## echo the value of variable need to assign
+
+      register: registered_var   ## this will take the echo value and register it as value for new var
+
+    - name: to print the value of registered ansible-variables   ## this will be printing value of that registered variable
+      debug:
+        var: registered_var.stdout
+
+    - name: to print the value of nested ansible-variable
+      debug:
+        var: fruits_label[fruit_basket[1].fruits[1]]
+
+    - name: access the keys for variable and convert those in uppercase    ##Jinja2 filter
+      debug:
+        var: fruits_label.keys() | list | map('upper') | list
+
+    - name: access the variable from the another variable vars_files
+      debug:
+        var: var_file_variable
+
+    - name: accessing the variable at runtime
+      debug:
+        var: version
+
+    - name: accessing the variable at runtime
+      debug:
+        var: other_variable

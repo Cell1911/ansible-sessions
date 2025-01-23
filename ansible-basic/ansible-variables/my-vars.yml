@@ -1,0 +1,4 @@
+---
+var_file_variable: "Hello, world in main var.yml!"
+other_variable: "foo"
+version: "1.0"

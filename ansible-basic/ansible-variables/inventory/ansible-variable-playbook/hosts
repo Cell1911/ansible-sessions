@@ -1,0 +1,2 @@
+[awshost]  ##host_address and key to connect
+44.202.249.157 ansible_user=ubuntu ansible_ssh_private_key_file=/root/.ssh/token-check.pem
