@@ -1,0 +1,41 @@
+---
+   ## boolean variable check
+- name: install apache web server
+  apt: 
+    name: apache2
+    state: absent
+  when: install_apache_flag
+
+- name: Combine condtions using ansible_facts
+  debug: 
+    var: ansible_facts['kernel_version']
+  when: 
+    - ansible_facts['os_family'] == "Debian"
+    - ansible_facts['distribution_major_version'] == "24"
+
+- name: Setting up complex conditions
+  debug: 
+    var: ansible_facts['kernel_version']
+  when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution_major_version'] | int >= 24
+
+- name: Register a variable and evaluate
+  ansible.builtin.command: cat /home/ubuntu/test-file.txt
+  register: test_file_content
+
+- name: use the variable in above condition statement debug evaluate
+  debug:
+    var: test_file_content.stdout    ## this will print the value of registered variable
+  when: test_file_content.stdout.find('hi') != -1
+
+- name: Run with the items greater than 5
+  ansible.builtin.command: echo {{ item }}
+  loop: [ 0, 10, 8, 14, 9, 7 ]
+  when: item > 5
+
+- name: How to use ansible_facts
+  debug:
+    var: ansible_facts['distribution']
+
+  when: ansible_facts['os_family'] == "Debian"
+
+
